@@ -81,6 +81,28 @@ Custo total do protótipo: **≈ R$ 300 a R$ 550**.
 - Coloque um plano de GND hachurado **atrás** da grade (lado oposto à língua) para reduzir ruído.
 - Mantenha a antena do nRF52840 longe do GND e da bateria. A saliva atenua o sinal, por isso a antena deve ficar no lado voltado para os dentes.
 
+## 4.1 Layout KiCad da grade flexível
+
+Arquivos em [`hardware/kicad/`](hardware/kicad/), abertos no KiCad 8:
+- `mouthpad_grid.kicad_pcb`: placa pronta, gerada pelo script
+- `gen_grid.py`: gerador paramétrico. Altere `P` (pitch), `H` (tamanho do losango) ou `N` (tamanho da grade) e rode `python3 gen_grid.py`
+
+![Preview da grade](docs/kicad-grid-preview.png)
+
+| Parâmetro | Valor |
+|---|---|
+| Substrato | flex de poliimida de 2 camadas, 25 µm, cobre de 18 µm, acabamento ENIG |
+| Área sensível | ~18,5 × 19 mm, losangos com pitch de 3 mm e gap de ~0,28 mm |
+| Linhas R0–R5 | camada F.Cu (lado da língua) |
+| Colunas C0–C5 | camada B.Cu |
+| Cauda | 13 pads com pitch de 1,0 mm (R0–R5, GND, C0–C5), para conector FPC ZIF de 13 vias ou solda direta |
+| Ligação ao MPR121 | R0–R5 → E0–E5 e C0–C5 → E6–E11 |
+
+**Antes de fabricar:**
+- Rode *Fill All Zones* (atalho B) e o DRC no KiCad.
+- Se possível, encomende com reforço (stiffener) de PI de 0,2 mm sob a cauda e coverlay sobre a grade.
+- Fabricantes como JLCPCB e PCBWay fazem flex de 2 camadas por ~US$ 20–40 o lote.
+
 ## 5. Software
 
 Firmware em **CircuitPython**: [`firmware/code.py`](firmware/code.py)
@@ -140,7 +162,8 @@ transparente, trilhas e pad dourados ao centro, bateria e microcontrolador nas l
 - [ ] IMU (ex.: LSM6DS3, já presente no XIAO Sense) para gestos de cabeça
 - [ ] Rolagem com dois toques e arraste
 - [ ] App de calibração
-- [ ] Layout KiCad da flex-PCB
+- [x] Layout KiCad da flex-PCB
+- [ ] Plano de GND hachurado (exige flex de 3 camadas)
 
 ## Licença
 MIT. Projeto educacional sem afiliação com a Augmental.
